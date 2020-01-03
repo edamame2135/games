@@ -24,25 +24,26 @@ class player(object):
         self.left = False
         self.right = False
         self.walkCount = 0
+    def draw(self, win):
+        if self.walkCount + 1 >= 27:
+            self.walkCount = 0
+        if self.left:
+            win.blit(walkLeft[self.walkCount//3], (self.x,self.y))
+            self.walkCount += 1
+        elif self.right:
+            win.blit(walkRight[self.walkCount//3], (self.x,self.y))
+            self.walkCount += 1
+        else:
+            win.blit(char, (self.x,self.y))
 
 
 def redrawGameWindow():
-    global walkCount
-
     win.blit(bg, (0,0))
-    if walkCount + 1 >= 27:
-        walkCount = 0
-    if left:
-        win.blit(walkLeft[walkCount//3], (x,y))
-        walkCount += 1
-    elif right:
-        win.blit(walkRight[walkCount//3], (x,y))
-        walkCount += 1
-    else:
-        win.blit(char, (x,y))
+    bigboi.draw(win)
     pygame.display.update()
 
 #mainLoop
+bigboi = player(300, 410, 64, 64)
 run = True
 while run:
     clock.tick(27)
@@ -51,34 +52,34 @@ while run:
         if event.type == pygame.QUIT:
             run = False
     keys = pygame.key.get_pressed()
-    if keys[pygame.K_LEFT] and x > 5:
-        x -= vel
-        left = True
-        right = False
-    elif keys[pygame.K_RIGHT] and x < 500 - width - vel:
-        x += vel
-        left = False
-        right = True
+    if keys[pygame.K_LEFT] and bigboi.x > 5:
+        bigboi.x -= bigboi.vel
+        bigboi.left = True
+        bigboi.right = False
+    elif keys[pygame.K_RIGHT] and bigboi.x < 500 - bigboi.width - bigboi.vel:
+        bigboi.x += bigboi.vel
+        bigboi.left = False
+        bigboi.right = True
     else:
-        right = False
-        left = False
-        walkCount =0
-    if not isJump:
+        bigboi.right = False
+        bigboi.left = False
+        bigboi.walkCount =0
+    if not bigboi.isJump:
         if keys[pygame.K_SPACE]:
-            isJump = True
-            right = False
-            left = False
-            walkCount = 0
+            bigboi.isJump = True
+            bigboi.right = False
+            bigboi.left = False
+            bigboi.walkCount = 0
     else:
-        if jumpCount >= -10:
+        if bigboi.jumpCount >= -10:
             neg = 1
-            if jumpCount < 0:
+            if bigboi.jumpCount < 0:
                 neg = -1
-            y -= (jumpCount ** 2) * 0.5 * neg
-            jumpCount -= 1
+            bigboi.y -= (bigboi.jumpCount ** 2) * 0.5 * neg
+            bigboi.jumpCount -= 1
         else:
-            isJump = False
-            jumpCount = 10
+            bigboi.isJump = False
+            bigboi.jumpCount = 10
     redrawGameWindow()
     
     
