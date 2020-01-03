@@ -11,18 +11,20 @@ bg = pygame.image.load('bg.jpg')
 char = pygame.image.load('standing.png')
 
 clock = pygame.time.Clock()
-x = 50
-y = 400
 
-width = 64
-height = 64
-vel = 5
+class player(object):
+    def __init__(self, x, y, width, height):
+        self.x = x
+        self.y = y
+        self.width = width
+        self.height = height
+        self.vel = 5
+        self.isJump = False
+        self.jumpCount = 10
+        self.left = False
+        self.right = False
+        self.walkCount = 0
 
-isJump = False
-jumpCount = 10
-left = False
-right = False
-walkCount = 0
 
 def redrawGameWindow():
     global walkCount
